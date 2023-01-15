@@ -34,4 +34,9 @@ def room_dicts():
                 'longitude': 0.33894476,
                 'latitude': 51.39916678,
             }
-     ]
+    ]
+
+def test_repositrory_list_without_parameters(room_dicts):
+    repo = memrepo.MemRepo(room_dicts)
+    rooms = [r.Room.from_dict(i) for i in room_dicts]
+    assert rooms == repo.list()
