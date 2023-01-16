@@ -1,9 +1,0 @@
-{
-    "pythonTestExplorer.testFramework": "pytest",
-    "pythonTestExplorer.testplanPath": "tests",
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
-}
