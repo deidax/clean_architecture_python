@@ -8,7 +8,7 @@ class InvalidRoomListRequestException(Exception):
         if bool(error): self._errors.append(error)
     
     
-    def parameter_error(self, parameter: str, message: str):
+    def add_error(self, parameter: str, message: str):
         self._errors.append({'parameter': parameter, 'message': message})
     
     @property

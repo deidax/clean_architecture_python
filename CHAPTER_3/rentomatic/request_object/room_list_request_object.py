@@ -44,7 +44,7 @@ class RoomListRequestObject:
             invalid_keys = list(set(f_keys).difference(self._accepted_filters))
             filters_keys_exception = InvalidRoomListRequestException()
             for inv_key_el in invalid_keys:
-                filters_keys_exception.parameter_error(parameter=inv_key_el, message='\'{}\' is an invalid filter key'.format(inv_key_el))
+                filters_keys_exception.add_error(parameter=inv_key_el, message='\'{}\' is an invalid filter key'.format(inv_key_el))
             raise filters_keys_exception
             
         return filters['filters']

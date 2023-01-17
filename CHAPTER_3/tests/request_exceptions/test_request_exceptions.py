@@ -8,7 +8,7 @@ def test_invalid_room_list_get_request_error():
     
     ex = InvalidRoomListRequestException()
     
-    ex.parameter_error('filters', 'Invalid')
+    ex.add_error('filters', 'Invalid')
     
     assert req.errors == ex.errors
     assert bool(ex) is True
