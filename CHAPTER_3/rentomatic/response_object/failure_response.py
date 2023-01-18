@@ -1,10 +1,11 @@
 
-class SuccessResponse:
+class FailureResponse:
     
     
     def __init__(self) -> None:
         self._res_type = None
         self._res_value = None
+        self._cause_of_failure = None
         self._res_message = ''
     
     @property
@@ -22,6 +23,14 @@ class SuccessResponse:
     @response_type.setter
     def response_type(self, value):
         self._res_type = value
+    
+    @property
+    def cause_of_failure(self):
+        return self._cause_of_failure
+    
+    @cause_of_failure.setter
+    def response_value(self, value):
+        self._cause_of_failure = value
     
     @property
     def response_message(self):

@@ -55,4 +55,4 @@ def test_room_list_without_parameters(domain_rooms):
     """Run The Tests"""
     assert bool(request) is True
     repo.list.assert_called_with()
-    assert result.value == domain_rooms
+    assert result == domain_rooms

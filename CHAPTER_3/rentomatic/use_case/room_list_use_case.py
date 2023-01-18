@@ -1,4 +1,3 @@
-from rentomatic.response_object.success_response import SuccessResponse
 
 class RoomListUseCase():
     
@@ -7,4 +6,5 @@ class RoomListUseCase():
 
     def execute(self, request):
         rooms = self.repo.list()
-        return SuccessResponse(rooms)
+        return rooms
+        #return SuccessResponse(rooms)
