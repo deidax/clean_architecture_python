@@ -17,7 +17,7 @@ class FailureResponseBuilder(ResponseBuilder):
         self._failure_response.response_value = value
         return self
     
-    def set_type(self):
+    def default_type(self):
         self._failure_response.response_type = ResponseTypesEnums.FAILURE
         return self
     
@@ -29,10 +29,17 @@ class FailureResponseBuilder(ResponseBuilder):
         self._failure_response.response_value = {'type': self._failure_response.response_type, 'message': self._failure_response.response_message}
         return self._failure_response
     
-    def set_response_message_and_build(self, message_value):
-        failure_builder = self.set_type().set_response_message(message_value)
+    def set_response_message_and_build(self, message_value=''):
+        failure_builder = self.default_type().set_response_message(message_value)
         return failure_builder.build_response()
     
-    
-    #def build_invalid_request_exception_object(self, exc: InvalidRoomListRequestException):
-    #    failure_builder = self.set_type().
+    def _set_cause_of_failure(self, value=ResponseTypesEnums.PARAMETERS_ERROR):
+        self._failure_response.cause_of_failure = value
+        return self
+        
+    def build_invalid_request_exception_object(self, exc: InvalidRoomListRequestException):
+        #default value 'PARAMETERS_ERROR'
+        failure_builder = self._set_cause_of_failure()\
+                              .set_response_message_and_build(exc.get_errors_messages())
+                             
+        return failure_builder

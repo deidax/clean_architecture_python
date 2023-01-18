@@ -15,7 +15,7 @@ class SuccessResponseBuilder(ResponseBuilder):
         self._success_response.response_value = value
         return self
     
-    def set_type(self):
+    def default_type(self):
         self._success_response.response_type = ResponseTypesEnums.SUCCESS
         return self
 
@@ -27,5 +27,5 @@ class SuccessResponseBuilder(ResponseBuilder):
         return self._success_response
     
     def set_response_message_and_build(self, message_value):
-        success_builder = self.set_type().set_response_message(message_value)
+        success_builder = self.default_type().set_response_message(message_value)
         return success_builder.build_response()

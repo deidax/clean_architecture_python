@@ -27,3 +27,11 @@ class InvalidRoomListRequestException(Exception):
             err_m +=ms+"\n"
             
         return err_m
+    
+    def get_errors_messages(self):
+        if len(self.errors) < 1: return self
+        err_m = ''
+        for err in self.errors:
+            err_m = err_m+"{0}: {1}\n".format(err['parameter'], err['message'])
+        
+        return err_m[:-1]

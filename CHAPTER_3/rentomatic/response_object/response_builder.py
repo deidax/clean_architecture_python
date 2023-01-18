@@ -13,7 +13,7 @@ class ResponseBuilder(ABC):
     
     @staticmethod
     @abstractmethod
-    def set_type(type_value=None):
+    def default_type():
         pass
     
     @staticmethod
