@@ -35,7 +35,7 @@ class RoomListRequestObject:
         return str(self._req_exception.get_errors_messages())
     
     def _load_filters(self, filters):
-        if filters == {}: return None
+        if filters == {}: return {}
         if not isinstance(filters, dict): return filters
         if 'filters' not in filters:
             raise InvalidRoomListRequestException({ next(iter(filters)): 'Not a valid filter key. use \'filters\' instead' })

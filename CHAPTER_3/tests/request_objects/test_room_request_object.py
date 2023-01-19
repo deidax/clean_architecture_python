@@ -11,7 +11,7 @@ def test_build_room_list_request_object_without_parameters():
 def test_build_room_list_request_object_from_empty_dict():
     request = RoomListRequestObject.from_dict({})
     
-    assert request.filters is None
+    assert request.filters == {}
     assert bool(request) is True
 
 def test_build_room_list_request_object_from_dict_with_empty_filters():

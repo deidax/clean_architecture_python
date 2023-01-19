@@ -23,7 +23,9 @@ def test_get(mock_use_case, client):
                                             .get_response()
     http_response = client.get('/rooms')
     assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success', 'message': 'Rooms List Data', 'response': [room_dict]}
-    mock_use_case().execute.assert_called_with()
+    mock_use_case().execute.assert_called()
+    args, kwargs = mock_use_case().execute.call_args
+    assert args[0].filters == {}
     assert http_response.status_code == 200
     assert http_response.mimetype == 'application/json'
     

@@ -57,3 +57,11 @@ class FailureResponse:
     
     def __bool__(self):
         return self._res_type['value']
+    
+    def get_response(self):
+        return {
+            'type': self.response_type,
+            'cause': self.cause_of_failure,
+            'message': self.response_message,
+            'response': self.response_value
+        }

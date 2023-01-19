@@ -37,4 +37,5 @@ def room():
     request = RoomListRequestObject.from_dict(dict_f={})
     use_case = uc.RoomListUseCase(repo)
     result = use_case.execute(request)
+    
     return Response(json.dumps(result, cls=ser.RoomJsonEncoder), mimetype='application/json', status=200)

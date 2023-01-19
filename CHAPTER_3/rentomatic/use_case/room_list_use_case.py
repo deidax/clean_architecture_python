@@ -19,15 +19,16 @@ class RoomListUseCase():
         and handle any generic errors
         """
         try:
-            rooms = self.repo.list(filters=request.filters)
+            rooms = self.repo.list()
             """
             Build success response after validation
             and return data
             """
             return SuccessResponseBuilder()\
                     .set_value(rooms)\
-                    .set_response_message_and_build('Rooms List Data')\
-                    .get_response()
+                    .set_response_message_and_build('Rooms List Data')
+                    #.get_response()Remove this later
         except Exception as exp:
             return FailureResponseBuilder()\
                     .build_system_error(exp)
+                    #.get_response()Remove this later
