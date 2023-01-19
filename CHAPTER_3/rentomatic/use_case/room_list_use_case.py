@@ -1,6 +1,5 @@
 from rentomatic.response_object.success_response_builder import SuccessResponseBuilder
 from rentomatic.response_object.failed_response_builder import FailureResponseBuilder
-from rentomatic.request_exceptions.invalid_room_list_request_exception import InvalidRoomListRequestException
 
 class RoomListUseCase():
     
@@ -27,7 +26,8 @@ class RoomListUseCase():
             """
             return SuccessResponseBuilder()\
                     .set_value(rooms)\
-                    .set_response_message_and_build('Rooms List Data')
+                    .set_response_message_and_build('Rooms List Data')\
+                    .get_response()
         except Exception as exp:
             return FailureResponseBuilder()\
                     .build_system_error(exp)
