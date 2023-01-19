@@ -21,18 +21,13 @@ class RoomListUseCase():
         """
         try:
             rooms = self.repo.list(filters=request.filters)
+            """
+            Build success response after validation
+            and return data
+            """
+            return SuccessResponseBuilder()\
+                    .set_value(rooms)\
+                    .set_response_message_and_build('Rooms List Data')
         except Exception as exp:
             return FailureResponseBuilder()\
                     .build_system_error(exp)
-        
-        """
-        Build success response after validation
-        """
-        response = SuccessResponseBuilder()\
-                    .set_value(rooms)\
-                    .set_response_message_and_build('Rooms data')
-        
-        """
-        Return success response object
-        """
-        return response
