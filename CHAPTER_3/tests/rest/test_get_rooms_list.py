@@ -1,6 +1,6 @@
 import json
 from unittest import mock
-
+from rentomatic.response_object.success_response_builder import SuccessResponseBuilder
 from rentomatic.domain.room import Room
 
 room_dict = {
@@ -17,9 +17,13 @@ rooms= [room]
 
 @mock.patch('rentomatic.use_case.room_list_use_case.RoomListUseCase')
 def test_get(mock_use_case, client):
-    mock_use_case().execute.return_value = rooms
+    mock_use_case().execute.return_value = SuccessResponseBuilder()\
+                                            .set_value(rooms)\
+                                            .set_response_message_and_build('Rooms List Data')\
+                                            .get_response()
     http_response = client.get('/rooms')
-    assert json.loads(http_response.data.decode('UTF-8')) == [room_dict]
+    assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success', 'message': 'Rooms List Data', 'response': [room_dict]}
     mock_use_case().execute.assert_called_with()
     assert http_response.status_code == 200
     assert http_response.mimetype == 'application/json'
+    
