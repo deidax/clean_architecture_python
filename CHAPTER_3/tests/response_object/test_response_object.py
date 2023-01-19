@@ -54,7 +54,7 @@ def test_response_failure_contains_value(response_type, response_message):
     room_failed_resp = FailureResponseBuilder()\
                         .set_response_message_and_build(response_message)
     
-    assert room_failed_resp.response_value == {'type': response_type, 'message': response_message}
+    assert room_failed_resp.response_value == {'type': response_type,'cause': 'Unknown', 'message': response_message}
 
 def test_response_failure_initialisation_with_exception(response_type):
     room_failed_resp = FailureResponseBuilder()\
@@ -89,4 +89,37 @@ def test_response_failure_from_invalid_request_object_with_errors():
     # Assert the cause of the Failure for more details
     assert room_failed_resp.cause_of_failure_to_dict == ResponseTypesEnums.PARAMETERS_ERROR
     assert room_failed_resp.response_message == "path: Is mandatory\npath: cannot be empty"
+
+
+def test_response_failure_build_resource_error():
+    room_failed_resp = FailureResponseBuilder()\
+                        .build_resource_error("test message")
     
+    assert bool(room_failed_resp) is False
+    # Assert that the response is a Failure
+    assert room_failed_resp.response_type_to_dict == ResponseTypesEnums.FAILURE
+    # Assert the cause of the Failure for more details
+    assert room_failed_resp.cause_of_failure_to_dict == ResponseTypesEnums.RESOURCE_ERROR
+    assert room_failed_resp.response_message == "test message"
+
+def test_response_failure_build_parameters_error():
+    room_failed_resp = FailureResponseBuilder()\
+                    .build_parameters_error("test message")
+    
+    assert bool(room_failed_resp) is False
+    # Assert that the response is a Failure
+    assert room_failed_resp.response_type_to_dict == ResponseTypesEnums.FAILURE
+    # Assert the cause of the Failure for more details
+    assert room_failed_resp.cause_of_failure_to_dict == ResponseTypesEnums.PARAMETERS_ERROR
+    assert room_failed_resp.response_message == "test message"
+
+def test_response_failure_build_system_error():
+    room_failed_resp = FailureResponseBuilder()\
+                    .build_system_error("test message")
+    
+    assert bool(room_failed_resp) is False
+    # Assert that the response is a Failure
+    assert room_failed_resp.response_type_to_dict == ResponseTypesEnums.FAILURE
+    # Assert the cause of the Failure for more details
+    assert room_failed_resp.cause_of_failure_to_dict == ResponseTypesEnums.SYSTEM_ERROR
+    assert room_failed_resp.response_message == "test message"

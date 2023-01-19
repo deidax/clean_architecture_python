@@ -10,6 +10,7 @@ class RoomListRequestObject:
         try:
             self.filters = self._load_filters(filters)
         except InvalidRoomListRequestException as req_exception:
+            self.filters = None
             self._req_exception = req_exception
             
     
@@ -30,6 +31,9 @@ class RoomListRequestObject:
     def show_errors_message(self):
         return str(self._req_exception)
     
+    def show_clean_errors_message(self):
+        return str(self._req_exception.get_errors_messages())
+    
     def _load_filters(self, filters):
         if filters == {}: return None
         if not isinstance(filters, dict): return filters
@@ -46,8 +50,7 @@ class RoomListRequestObject:
             for inv_key_el in invalid_keys:
                 filters_keys_exception.add_error(parameter=inv_key_el, message='\'{}\' is an invalid filter key'.format(inv_key_el))
             raise filters_keys_exception
-            
-        return filters['filters']
         
+        return filters['filters']
                 
             

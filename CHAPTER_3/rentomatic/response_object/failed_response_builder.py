@@ -26,7 +26,13 @@ class FailureResponseBuilder(ResponseBuilder):
         return self
 
     def build_response(self):
-        self._failure_response.response_value = {'type': self._failure_response.response_type, 'message': self._failure_response.response_message}
+        self._failure_response.response_value = {
+            'type': self._failure_response.response_type,
+            'cause':  self._failure_response.cause_of_failure,
+            'message': self._failure_response.response_message
+        }
+        
+        
         return self._failure_response
     
     def set_response_message_and_build(self, message_value=''):
@@ -43,3 +49,22 @@ class FailureResponseBuilder(ResponseBuilder):
                               .set_response_message_and_build(exc.get_errors_messages())
                              
         return failure_builder
+
+    def build_resource_error(self, message_value=''):
+        failure_builder = self._set_cause_of_failure(value=ResponseTypesEnums.RESOURCE_ERROR)\
+                              .set_response_message_and_build(message_value)
+        
+        return failure_builder
+    
+    def build_parameters_error(self, message_value=''):
+        failure_builder = self._set_cause_of_failure()\
+                            .set_response_message_and_build(message_value)
+    
+        return failure_builder
+
+    def build_system_error(self, message_value=''):
+        failure_builder = self._set_cause_of_failure(value=ResponseTypesEnums.SYSTEM_ERROR)\
+                            .set_response_message_and_build(message_value)
+
+        return failure_builder
+    

@@ -30,6 +30,8 @@ class FailureResponse:
     
     @property
     def cause_of_failure(self):
+        if self._res_cause_of_failure is None: return 'Unknown'
+        if self._res_cause_of_failure['label'] is None: return 'Unkonwn'
         return self._res_cause_of_failure['label']
     
     @property
