@@ -18,7 +18,7 @@ class RoomListRequestObject:
         return not bool(self._req_exception)
 
     @classmethod
-    def from_dict(cls, dict_f):
+    def from_dict(cls, dict_f: dict):
         return cls(filters=dict_f)
     
     @property 

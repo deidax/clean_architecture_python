@@ -28,9 +28,10 @@ def test_serializer_filters_params():
     
     request = mock.Mock()
     params = {'price__gt': '2', 'price__lt': '6'}
-    request.args = [('filter_price__get', '2'), ('filter_price__lt', '6')]
+    """request.args.items is a generator"""
+    request.args.items.return_value = (i for i in [('filter_price__gt', '2'), ('filter_price__lt', '6')])
     
     
     
-    assert HttpFlaskRequestSer().filters(request) == {'filters':{'price__gt': '2', 'price__lt': '6'}}
+    assert HttpFlaskRequestSer().filters(request.args.items()) == {'filters':{'price__gt': '2', 'price__lt': '6'}}
 

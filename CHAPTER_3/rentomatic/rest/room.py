@@ -7,6 +7,7 @@ from rentomatic.repository import memrepo as mr
 from rentomatic.use_case import room_list_use_case as uc
 from rentomatic.serializers import room_json_ser as ser
 from rentomatic.request_object.room_list_request_object import RoomListRequestObject
+from rentomatic.serializers.requests.http_flask_request_ser import HttpFlaskRequestSer
 
 blueprint = Blueprint('room', __name__)
 
@@ -35,9 +36,8 @@ room3 = {
 @blueprint.route('/rooms', methods=['GET'])
 def room():
     repo = mr.MemRepo([room1,room2,room3])
-    filters = request.args
-    print("F--> ",filters)
-    room_list_request = RoomListRequestObject.from_dict(dict_f={})
+    filters = HttpFlaskRequestSer().filters(flask_request_args=request.args.items())
+    room_list_request = RoomListRequestObject.from_dict(dict_f=filters)
     use_case = uc.RoomListUseCase(repo)
     result = use_case.execute(room_list_request)
     
