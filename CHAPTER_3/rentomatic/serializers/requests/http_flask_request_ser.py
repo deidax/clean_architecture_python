@@ -4,7 +4,16 @@ class HttpFlaskRequestSer(RoomListInputRequestSeria):
     
     
     
-    def filters(self, filters: list):
-        if not isinstance(filters, list): return None
-        return {'price__gt': '2', 'price__lt': '6'}
+    def filters(self, flask_request: list):
+        if not isinstance(flask_request, list): return None
+        query_filter =  {
+            'filters': {}
+        }
+        
+        for arg, value in flask_request.args.items():
+            if(arg).statswith('filter_'):
+                query_filter['filters'][arg.replace('filter_', '')] = value
+        
+        return query_filter
+                
     

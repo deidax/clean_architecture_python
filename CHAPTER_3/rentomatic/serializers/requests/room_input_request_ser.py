@@ -4,6 +4,6 @@ class RoomListInputRequestSeria(ABC):
     
     @staticmethod
     @abstractmethod
-    def filters(filters) -> dict:
+    def filters(filters_arg) -> dict:
         pass
     
