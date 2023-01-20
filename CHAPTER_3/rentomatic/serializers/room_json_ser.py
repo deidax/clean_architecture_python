@@ -1,5 +1,6 @@
 import json
 
+
 class RoomJsonEncoder(json.JSONEncoder):
     
     def default(self, o):
@@ -9,4 +10,5 @@ class RoomJsonEncoder(json.JSONEncoder):
             return o_to_dict
         except AttributeError:
             return super().default(o)
+        
         

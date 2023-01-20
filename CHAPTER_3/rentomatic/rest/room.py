@@ -1,5 +1,6 @@
 import json
 
+from flask import request
 from flask import Blueprint, Response
 
 from rentomatic.repository import memrepo as mr
@@ -34,8 +35,10 @@ room3 = {
 @blueprint.route('/rooms', methods=['GET'])
 def room():
     repo = mr.MemRepo([room1,room2,room3])
-    request = RoomListRequestObject.from_dict(dict_f={})
+    filters = request.args
+    print("F--> ",filters)
+    room_list_request = RoomListRequestObject.from_dict(dict_f={})
     use_case = uc.RoomListUseCase(repo)
-    result = use_case.execute(request)
+    result = use_case.execute(room_list_request)
     
     return Response(json.dumps(result, cls=ser.RoomJsonEncoder), mimetype='application/json', status=200)
