@@ -6,6 +6,7 @@ class SuccessResponse:
         self._res_type = None
         self._res_value = None
         self._res_message = ''
+        self._status_code = None
     
     @property
     def response_value(self):
@@ -31,6 +32,13 @@ class SuccessResponse:
     def response_message(self, value):
         self._res_message = self._format_message(value)
     
+    @property
+    def status_code(self):
+        return self._status_code
+    @status_code.setter
+    def status_code(self, value):
+        self._status_code = value
+    
     def _format_message(self, msg):
         if isinstance(msg, Exception):
             return "{}: {}".format(msg.__class__.__name__, "{}".format(msg))
@@ -42,6 +50,7 @@ class SuccessResponse:
     def get_response(self):
         return {
             'type': self.response_type,
+            'status_code': self.status_code,
             'message': self.response_message,
             'response': self.response_value
         }

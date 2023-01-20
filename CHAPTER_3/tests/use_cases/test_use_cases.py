@@ -87,8 +87,9 @@ def test_room_list_handles_generic_error():
     
     
     assert bool(response_object) is False
-    assert response_object.response_value == {
+    assert response_object.get_response() == {
         'type': ResponseTypesEnums.FAILURE['label'],
+        'status_code': ResponseTypesEnums.SYSTEM_ERROR['status_code'],
         'cause': ResponseTypesEnums.SYSTEM_ERROR['label'],
         'message': 'Exception: Just an error message'
     }
@@ -102,8 +103,9 @@ def test_room_list_handles_bad_request():
     response_object = room_list_use_case.execute(request)
     
     assert bool(response_object) is False
-    assert response_object.response_value == {
+    assert response_object.get_response() == {
         'type': ResponseTypesEnums.FAILURE['label'],
+        'status_code': ResponseTypesEnums.PARAMETERS_ERROR['status_code'],
         'cause': ResponseTypesEnums.PARAMETERS_ERROR['label'],
         'message': 'filters: filters must be a dict'
     }

@@ -23,7 +23,7 @@ def test_get(mock_use_case, client):
                                             .set_response_message_and_build('Rooms List Data')\
                                             .get_response()
     http_response = client.get('/rooms')
-    assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success', 'message': 'Rooms List Data', 'response': [room_dict]}
+    assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success','status_code': 200, 'message': 'Rooms List Data', 'response': [room_dict]}
     mock_use_case().execute.assert_called()
     args, kwargs = mock_use_case().execute.call_args
     assert args[0].filters == {}
@@ -38,7 +38,7 @@ def test_get_with_filters(mock_use_case, client):
                                             .set_response_message_and_build('Rooms List Data')\
                                             .get_response()
     http_response = client.get('/rooms?filter_price__gt=2&filter_price__lt=6')
-    assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success', 'message': 'Rooms List Data', 'response': [room_dict]}
+    assert json.loads(http_response.data.decode('UTF-8')) == {'type': 'Success','status_code': 200, 'message': 'Rooms List Data', 'response': [room_dict]}
     
     mock_use_case().execute.assert_called()
     args, kwargs = mock_use_case().execute.call_args

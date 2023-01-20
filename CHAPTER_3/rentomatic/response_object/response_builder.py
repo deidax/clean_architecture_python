@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from .response_types_enums import ResponseTypesEnums
 
 class ResponseBuilder(ABC):
     """
@@ -29,4 +30,9 @@ class ResponseBuilder(ABC):
     @staticmethod
     @abstractmethod
     def set_response_message_and_build(message_value=''):
+        pass
+    
+    @staticmethod
+    @abstractmethod
+    def _set_status_code(resp_type: ResponseTypesEnums):
         pass

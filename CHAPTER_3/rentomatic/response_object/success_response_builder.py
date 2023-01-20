@@ -17,10 +17,15 @@ class SuccessResponseBuilder(ResponseBuilder):
     
     def default_type(self):
         self._success_response.response_type = ResponseTypesEnums.SUCCESS
+        self = self._set_status_code()
         return self
 
     def set_response_message(self, message_value):
         self._success_response.response_message = message_value
+        return self
+    
+    def _set_status_code(self, resp_type=ResponseTypesEnums.SUCCESS['status_code']):
+        self._success_response.status_code = resp_type
         return self
 
     def build_response(self):
