@@ -1,56 +1,17 @@
+from .room_response import RoomResponse
+import json
+from rentomatic.serializers.success_request_room_json_ser import SuccessRequestRoomJsonSer
+from rentomatic.serializers.room_json_ser import RoomJsonEncoder
 
-class SuccessResponse:
+class SuccessResponse(RoomResponse):
     
     
-    def __init__(self) -> None:
-        self._res_type = None
-        self._res_value = None
-        self._res_message = ''
-        self._status_code = None
     
-    @property
-    def response_value(self):
-        return self._res_value
-    
-    @response_value.setter
-    def response_value(self, value):
-        self._res_value = value
-    
-    @property
-    def response_type(self):
-        return self._res_type['label']
-    
-    @response_type.setter
-    def response_type(self, value):
-        self._res_type = value
-    
-    @property
-    def response_message(self):
-        return self._res_message
-    
-    @response_message.setter
-    def response_message(self, value):
-        self._res_message = self._format_message(value)
-    
-    @property
-    def status_code(self):
-        return self._status_code
-    @status_code.setter
-    def status_code(self, value):
-        self._status_code = value
+    def json_ser(self, encoder=SuccessRequestRoomJsonSer):
+        super().json_ser(encoder)
+        return json.dumps(self, cls=encoder)
     
     def _format_message(self, msg):
         if isinstance(msg, Exception):
             return "{}: {}".format(msg.__class__.__name__, "{}".format(msg))
         return msg
-    
-    def __bool__(self):
-        return self._res_type['value']
-    
-    def get_response(self):
-        return {
-            'type': self.response_type,
-            'status_code': self.status_code,
-            'message': self.response_message,
-            'response': self.response_value
-        }

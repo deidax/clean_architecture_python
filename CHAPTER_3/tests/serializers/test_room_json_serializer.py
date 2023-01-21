@@ -2,7 +2,7 @@ import json
 import uuid
 
 from rentomatic.domain import room as r
-from rentomatic.serializers import room_json_ser
+from rentomatic.serializers.room_json_ser import RoomJsonEncoder
 from rentomatic.serializers.requests.http_flask_request_ser import HttpFlaskRequestSer
 from unittest import mock
 
@@ -20,7 +20,7 @@ def test_serializer_domain_room():
     }}
     """.format(code)
     
-    json_room = json.dumps(room, cls=room_json_ser.RoomJsonEncoder)
+    json_room = json.dumps(room, cls=RoomJsonEncoder)
     assert json.loads(json_room) == json.loads(room_json_ser_expected_output)
 
 

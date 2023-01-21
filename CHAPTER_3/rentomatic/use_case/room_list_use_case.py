@@ -1,3 +1,4 @@
+from rentomatic.response_object.room_response import RoomResponse
 from rentomatic.response_object.success_response_builder import SuccessResponseBuilder
 from rentomatic.response_object.failed_response_builder import FailureResponseBuilder
 
@@ -6,7 +7,7 @@ class RoomListUseCase():
     def __init__(self, repo):
         self.repo = repo
 
-    def execute(self, request):
+    def execute(self, request) -> RoomResponse:
         """
         Check if request is valid before calling repo list
         """

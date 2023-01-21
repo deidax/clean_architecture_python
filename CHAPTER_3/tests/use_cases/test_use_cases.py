@@ -6,8 +6,6 @@ from rentomatic.domain import room as r
 from rentomatic.use_case import room_list_use_case as uc
 from rentomatic.request_object.room_list_request_object import RoomListRequestObject
 from rentomatic.response_object.response_types_enums import ResponseTypesEnums
-from rentomatic.request_exceptions.invalid_room_list_request_exception import InvalidRoomListRequestException
-from rentomatic.response_object.failed_response_builder import FailureResponseBuilder
 
 @pytest.fixture
 def domain_rooms():
