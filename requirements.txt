@@ -15,3 +15,8 @@ watchdog
 flake8
 Sphinx
 SQLAlchemy
+pytest-docker
+docker-compose
+pyyaml
+psycopg2-binary
+sqlalchemy_utils
