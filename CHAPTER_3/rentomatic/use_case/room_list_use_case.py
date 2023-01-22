@@ -20,7 +20,7 @@ class RoomListUseCase():
         and handle any generic errors
         """
         try:
-            rooms = self.repo.list()
+            rooms = self.repo.list(filters=request.filters)
             """
             Build success response after validation
             and return data

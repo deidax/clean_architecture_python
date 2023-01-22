@@ -31,10 +31,17 @@ room3 = {
     'longitude': 0.27891577,
     'latitude': 51.45994069,
 }
+room4 = {
+    'code': 'k13694c4-435a-4366-ba0d-da5334a611b2',
+    'size': 56,
+    'price': 160,
+    'longitude': 0.27891577,
+    'latitude': 51.45994069,
+}
 
 @blueprint.route('/rooms', methods=['GET'])
 def room():
-    repo = mr.MemRepo([room1,room2,room3])
+    repo = mr.MemRepo([room1,room2,room3,room4])
     """Serialize the filters args"""
     filters = HttpFlaskRequestSer().filters(flask_request_args=request.args.items())
     """Inject the filters in the rooms list request"""

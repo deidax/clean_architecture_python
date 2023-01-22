@@ -30,7 +30,7 @@ def room_dicts():
             {
                 'code': 'eed76e77-55c1-41ce-985d-ca49bf6c0585',
                 'size': 93,
-                'price': 48,
+                'price': 148,
                 'longitude': 0.33894476,
                 'latitude': 51.39916678,
             }
@@ -50,3 +50,53 @@ def test_repository_list_with_code_equal_filter(room_dicts):
     
     assert len(repo_rooms) == 1
     assert repo_rooms[0].code == 'fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a'
+
+def test_repository_list_with_prie_equal_filter(room_dicts):
+    repo = memrepo.MemRepo(room_dicts)
+    
+    repo_rooms = repo.list(
+        filters={'price__iq': 66}
+    )
+    
+    assert len(repo_rooms) == 1
+    assert repo_rooms[0].price == 66
+    
+def test_repository_list_with_price_less_than_filter(room_dicts):
+    repo = memrepo.MemRepo(room_dicts)
+    
+    repo_rooms = repo.list(
+        filters={'price__lt': 66}
+    )
+    
+    assert len(repo_rooms) == 2
+    assert set([r.code for r in repo_rooms]) ==\
+        {
+            'f853578c-fc0f-4e65-81b8-566c5dffa35a',
+            '913694c6-435a-4366-ba0d-da5334a611b2'
+        }
+
+def test_repository_list_with_price_greater_than_filter(room_dicts):
+    repo = memrepo.MemRepo(room_dicts)
+    
+    repo_rooms = repo.list(
+        filters={'price__gt': 66}
+    )
+    
+    assert len(repo_rooms) == 1
+    assert set([r.code for r in repo_rooms]) ==\
+        {
+            'eed76e77-55c1-41ce-985d-ca49bf6c0585'
+        }
+
+def test_repository_list_with_price_between_filter(room_dicts):
+    repo = memrepo.MemRepo(room_dicts)
+    
+    repo_rooms = repo.list(
+        filters={'price__lt': 148,'price__gt': 60}
+    )
+    
+    assert len(repo_rooms) == 1
+    assert set([r.code for r in repo_rooms]) ==\
+        {
+            'fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a'
+        }
