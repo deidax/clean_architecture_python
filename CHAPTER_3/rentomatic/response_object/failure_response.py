@@ -1,5 +1,6 @@
 from .room_response import RoomResponse
 import json
+from rentomatic.serializers.failure_request_room_json_ser import FailureRequestRoomJsonSer
 class FailureResponse(RoomResponse):
     
     
@@ -43,5 +44,6 @@ class FailureResponse(RoomResponse):
         
         return res
     
-    def json_ser(self, encoder: json.JSONEncoder) -> json:
-        return super().json_ser(encoder)
+    def json_ser(self, encoder=FailureRequestRoomJsonSer) -> json:
+        super().json_ser(encoder)
+        return json.dumps(self, cls=encoder)

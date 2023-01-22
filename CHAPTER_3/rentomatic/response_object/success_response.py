@@ -1,7 +1,6 @@
 from .room_response import RoomResponse
 import json
 from rentomatic.serializers.success_request_room_json_ser import SuccessRequestRoomJsonSer
-from rentomatic.serializers.room_json_ser import RoomJsonEncoder
 
 class SuccessResponse(RoomResponse):
     

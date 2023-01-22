@@ -1,6 +1,7 @@
 import json
 from unittest import mock
 from rentomatic.response_object.success_response_builder import SuccessResponseBuilder
+from rentomatic.response_object.failed_response_builder import FailureResponseBuilder
 from rentomatic.domain.room import Room
 import uuid
 
@@ -50,4 +51,15 @@ def test_get_with_filters(mock_use_case, client):
     assert args[0].filters == {'price__gt': '2', 'price__lt': '6'}
     
     assert http_response.status_code == 200
+    assert http_response.mimetype == 'application/json'
+
+@mock.patch('rentomatic.use_case.room_list_use_case.RoomListUseCase')
+def test_get_with_failure(mock_use_case, client):
+    mock_use_case().execute.return_value = FailureResponseBuilder()\
+                                            .build_system_error('This is test system error')\
+    
+    http_response = client.get('/rooms')
+    assert json.loads(http_response.data.decode('UTF-8')) == {"type": "ResponseError","status_code": 500,'cause': 'SystemError', 'message': 'This is test system error'}
+    mock_use_case().execute.assert_called()
+    assert http_response.status_code == 500
     assert http_response.mimetype == 'application/json'

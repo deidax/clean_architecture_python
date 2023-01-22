@@ -105,5 +105,5 @@ def test_room_list_handles_bad_request():
         'type': ResponseTypesEnums.FAILURE['label'],
         'status_code': ResponseTypesEnums.PARAMETERS_ERROR['status_code'],
         'cause': ResponseTypesEnums.PARAMETERS_ERROR['label'],
-        'message': 'filters: filters must be a dict'
+        'message': 'parameter: filters\nmessage: filters must be a dict\n\n'
     }
