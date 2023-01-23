@@ -21,6 +21,7 @@ def pg_env(docker_ip):
                 'host':docker_ip
             }
     }
+    
 @pytest.fixture(scope="session")
 def pg_uri(pg_env):
     env = pg_env
@@ -47,9 +48,6 @@ def database_service(docker_services, pg_uri):
         timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(pg_uri)
     )
     return
-
-
-
 
 
 @pytest.fixture(scope='session')
