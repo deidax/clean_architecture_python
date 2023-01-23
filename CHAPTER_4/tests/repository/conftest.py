@@ -1,48 +1,65 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 import psycopg2
 import sqlalchemy
 import sqlalchemy_utils
+
 
 import pytest
 
 from rentomatic.repository.postgres_object import Base, Room
 
 
-def pg_is_responsive(ip, docker_setup):
+def is_postgresql_ready(docker_ip):
     try:
-        conn = psycopg2.connect(
-            "host={} user={} password={} dbname={}".format(
-                ip,
-                docker_setup['postgres']['user'],
-                docker_setup['postgres']['password'],
-                'postgres'
+        psycopg2.connect(
+            "postgresql://{user}:{password}@{host}/{db}".format(
+                user=os.getenv('POSTGRES_USER', ''),
+                password=os.getenv('POSTGRES_PASSWORD', ''),
+                host=docker_ip,
+                db=os.getenv('POSTGRES_DB', '')
             )
         )
-        conn.close()
+        print('CONNECTION READY!!')
         return True
-    except psycopg2.OperationalError as exp:
+    except:
         return False
+
+@pytest.fixture(scope="session")
+def database_service(docker_ip, docker_services):
+    docker_services.wait_until_responsive(
+        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(docker_ip)
+    )
+    return
+
+
+
 
 
 @pytest.fixture(scope='session')
-def pg_engine(docker_ip, docker_services, docker_setup):
+def pg_engine(docker_ip, docker_services):
+    print("Waiting until responsive (60s)..")
     docker_services.wait_until_responsive(
-        timeout=30.0, pause=0.1,
-        check=lambda: pg_is_responsive(docker_ip, docker_setup)
+        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(docker_ip)
     )
 
-    conn_str = "postgresql+psycopg2://{}:{}@{}/{}".format(
-        docker_setup['postgres']['user'],
-        docker_setup['postgres']['password'],
-        docker_setup['postgres']['host'],
-        docker_setup['postgres']['dbname']
-    )
+    conn_str = "postgresql://{user}:{password}@{host}/{db}".format(
+                user=os.getenv('POSTGRES_USER', ''),
+                password=os.getenv('POSTGRES_PASSWORD', ''),
+                host=docker_ip,
+                db=os.getenv('POSTGRES_DB', '')
+            )
     engine = sqlalchemy.create_engine(conn_str)
-    sqlalchemy_utils.create_database(engine.url)
-
+    if not sqlalchemy_utils.database_exists(engine.url):
+        sqlalchemy_utils.create_database(engine.url)
+        
+    print(f'Engine Connected !!: {sqlalchemy_utils.database_exists(engine.url)}')
     conn = engine.connect()
 
     yield engine
 
+    print("Engine Closed !!")
     conn.close()
 
 
@@ -54,10 +71,12 @@ def pg_session_empty(pg_engine):
 
     DBSession = sqlalchemy.orm.sessionmaker(bind=pg_engine)
 
+    print('Empty Session...')
     session = DBSession()
 
     yield session
 
+    print('Close Session...')
     session.close()
 
 
@@ -93,6 +112,7 @@ def pg_data():
             'latitude': 51.39916678,
         }
     ]
+
 
 
 @pytest.fixture(scope='function')
