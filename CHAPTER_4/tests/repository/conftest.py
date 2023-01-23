@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv('../../.env')
 import psycopg2
 import sqlalchemy
 import sqlalchemy_utils
@@ -10,16 +10,31 @@ import pytest
 
 from rentomatic.repository.postgres_object import Base, Room
 
+@pytest.fixture(scope="session")
+def pg_env(docker_ip):
+    return {
+        'postgres':
+            {
+                'dbname':os.getenv('POSTGRES_DB', ''),
+                'user':os.getenv('POSTGRES_USER', ''),
+                'password':os.getenv('POSTGRES_PASSWORD', ''),
+                'host':docker_ip
+            }
+    }
+@pytest.fixture(scope="session")
+def pg_uri(pg_env):
+    env = pg_env
+    return "postgresql://{user}:{password}@{host}/{db}".format(
+                user=env['postgres']['user'],
+                password=env['postgres']['password'],
+                host=env['postgres']['host'],
+                db=env['postgres']['dbname']
+            )
 
-def is_postgresql_ready(docker_ip):
+def is_postgresql_ready(pg_uri):
     try:
         psycopg2.connect(
-            "postgresql://{user}:{password}@{host}/{db}".format(
-                user=os.getenv('POSTGRES_USER', ''),
-                password=os.getenv('POSTGRES_PASSWORD', ''),
-                host=docker_ip,
-                db=os.getenv('POSTGRES_DB', '')
-            )
+            pg_uri
         )
         print('CONNECTION READY!!')
         return True
@@ -27,9 +42,9 @@ def is_postgresql_ready(docker_ip):
         return False
 
 @pytest.fixture(scope="session")
-def database_service(docker_ip, docker_services):
+def database_service(docker_services, pg_uri):
     docker_services.wait_until_responsive(
-        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(docker_ip)
+        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(pg_uri)
     )
     return
 
@@ -38,18 +53,14 @@ def database_service(docker_ip, docker_services):
 
 
 @pytest.fixture(scope='session')
-def pg_engine(docker_ip, docker_services):
+def pg_engine(docker_services, pg_uri):
     print("Waiting until responsive (60s)..")
     docker_services.wait_until_responsive(
-        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(docker_ip)
+        timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(pg_uri)
     )
 
-    conn_str = "postgresql://{user}:{password}@{host}/{db}".format(
-                user=os.getenv('POSTGRES_USER', ''),
-                password=os.getenv('POSTGRES_PASSWORD', ''),
-                host=docker_ip,
-                db=os.getenv('POSTGRES_DB', '')
-            )
+    conn_str = pg_uri
+    
     engine = sqlalchemy.create_engine(conn_str)
     if not sqlalchemy_utils.database_exists(engine.url):
         sqlalchemy_utils.create_database(engine.url)

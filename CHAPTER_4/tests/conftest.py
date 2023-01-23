@@ -1,6 +1,8 @@
 import os
 import tempfile
 import yaml
+from dotenv import load_dotenv
+load_dotenv()
 
 import pytest
 
@@ -21,3 +23,4 @@ def app():
 @pytest.fixture(scope="session")
 def docker_compose_file(pytestconfig):
     return os.path.join(str(pytestconfig.rootdir), "CHAPTER_4/tests/", "docker-compose.yaml")
+
