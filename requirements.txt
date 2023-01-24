@@ -14,7 +14,7 @@ wheel
 watchdog
 flake8
 Sphinx
-SQLAlchemy
+sqlalchemy<2.0
 pytest-docker
 docker-compose
 pyyaml
