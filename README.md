@@ -4,5 +4,12 @@ This is a learning project to practice the clean code architecture using python 
 
 ## project classes diagram
 
-
 ![classes_success_response](https://user-images.githubusercontent.com/58916216/214396225-fc052770-512b-4f5d-b39d-4426e804f015.png)
+
+## package classes diagram
+
+![packages_success_response](https://user-images.githubusercontent.com/58916216/214396434-a3342fbe-8244-44d6-9f18-15e14b708b5d.png)
+
+## response classes diagram
+
+![response](https://user-images.githubusercontent.com/58916216/214396512-8049606c-7982-4c2e-8751-3a91b2e5468c.png)
