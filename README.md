@@ -4,8 +4,5 @@ This is a learning project to practice the clean code architecture using python 
 
 ## project classes diagram
 
-<img
-  src="https://github.com/deidax/clean_arch_python/blob/CHAPTER_4/diagrams/classes_success_response.png?raw=true
-  alt="project classes diagram"
-  title="Optional title"
-  style="display: inline-block; margin: 0 auto; max-width: 300px">
+
+![classes_success_response](https://user-images.githubusercontent.com/58916216/214396225-fc052770-512b-4f5d-b39d-4426e804f015.png)
