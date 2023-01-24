@@ -4,7 +4,7 @@ load_dotenv('../../.env')
 import psycopg2
 import sqlalchemy
 import sqlalchemy_utils
-
+import time
 
 import pytest
 
@@ -37,7 +37,7 @@ def is_postgresql_ready(pg_uri):
         psycopg2.connect(
             pg_uri
         )
-        print('CONNECTION READY!!')
+        print('--> CONNECTION READY!!')
         return True
     except:
         return False
@@ -52,7 +52,7 @@ def database_service(docker_services, pg_uri):
 
 @pytest.fixture(scope='session')
 def pg_engine(docker_services, pg_uri):
-    print("Waiting until responsive (60s)..")
+    print("\nWaiting until responsive (30s)..")
     docker_services.wait_until_responsive(
         timeout=30.0, pause=0.1, check=lambda: is_postgresql_ready(pg_uri)
     )
@@ -63,12 +63,12 @@ def pg_engine(docker_services, pg_uri):
     if not sqlalchemy_utils.database_exists(engine.url):
         sqlalchemy_utils.create_database(engine.url)
         
-    print(f'Engine Connected !!: {sqlalchemy_utils.database_exists(engine.url)}')
+    print(f'\n--> Engine Connected ?: {sqlalchemy_utils.database_exists(engine.url)}')
     conn = engine.connect()
 
     yield engine
 
-    print("Engine Closed !!")
+    print("\n--> Engine Closed !!")
     conn.close()
 
 
@@ -80,12 +80,12 @@ def pg_session_empty(pg_engine):
 
     DBSession = sqlalchemy.orm.sessionmaker(bind=pg_engine)
 
-    print('Empty Session...')
+    print('\nEmpty Session...')
     session = DBSession()
 
     yield session
 
-    print('Close Session...')
+    print('\nClose Session...')
     session.close()
 
 
@@ -109,7 +109,7 @@ def pg_data():
         {
             'code': '913694c6-435a-4366-ba0d-da5334a611b2',
             'size': 56,
-            'price': 60,
+            'price': 160,
             'longitude': 0.27891577,
             'latitude': 51.45994069,
         },

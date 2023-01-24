@@ -7,9 +7,11 @@ from rentomatic.repository import memrepo as mr
 from rentomatic.use_case import room_list_use_case as uc
 from rentomatic.request_object.room_list_request_object import RoomListRequestObject
 from rentomatic.serializers.requests.http_flask_request_ser import HttpFlaskRequestSer
+from rentomatic.repository.postgresrepo import PostgresRepo
+from rentomatic.postgres_settings import postgres_connexion
 
 blueprint = Blueprint('room', __name__)
-
+"""
 room1 = {
     'code': 'f853578c-fc0f-4e65-81b8-566c5dffa35a',
     'size': 215,
@@ -38,10 +40,12 @@ room4 = {
     'longitude': 0.27891577,
     'latitude': 51.45994069,
 }
-
+"""
 @blueprint.route('/rooms', methods=['GET'])
 def room():
-    repo = mr.MemRepo([room1,room2,room3,room4])
+    #repo = mr.MemRepo([room1,room2,room3,room4])
+    """Postgres Repo"""
+    repo = PostgresRepo(postgres_connexion)
     """Serialize the filters args"""
     filters = HttpFlaskRequestSer().filters(flask_request_args=request.args.items())
     """Inject the filters in the rooms list request"""

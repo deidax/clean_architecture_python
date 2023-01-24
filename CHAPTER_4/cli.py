@@ -3,6 +3,12 @@
 from rentomatic.repository import memrepo as mr
 from rentomatic.use_case import room_list_use_case as uc
 
+from rentomatic.use_case.room_list_use_case import RoomListUseCase
+from rentomatic.request_object.room_list_request_object import RoomListRequestObject
+from rentomatic.repository.postgresrepo import PostgresRepo
+from rentomatic.postgres_settings import postgres_connexion
+
+"""
 room1 = {
 'code': 'f853578c-fc0f-4e65-81b8-566c5dffa35a',
 'size': 215,
@@ -28,5 +34,11 @@ room3 = {
 repo = mr.MemRepo([room1, room2, room3])
 use_case = uc.RoomListUseCase(repo=repo)
 result = use_case.execute()
+"""
 
-print([r.to_dict() for r in result])
+repo = PostgresRepo(postgres_connexion)
+use_case = RoomListUseCase(repo)
+request = RoomListRequestObject()
+result = use_case.execute(request=request)
+
+print(result.json_ser())
