@@ -11,7 +11,7 @@ class SuccessRequestRoomJsonSer(json.JSONEncoder):
             
             """Make sure to serialize Room objects 
             before adding them to the final serialized response"""
-            resp['response'] = [json.dumps(r, cls=RoomJsonEncoder) for r in resp['response']]
+            resp['response'] = [json.loads(json.dumps(r, cls=RoomJsonEncoder)) for r in resp['response']]
             return resp
         except AttributeError:
             return super().default(o)

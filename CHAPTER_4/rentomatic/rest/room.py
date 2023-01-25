@@ -8,6 +8,7 @@ from rentomatic.use_case import room_list_use_case as uc
 from rentomatic.request_object.room_list_request_object import RoomListRequestObject
 from rentomatic.serializers.requests.http_flask_request_ser import HttpFlaskRequestSer
 from rentomatic.repository.postgresrepo import PostgresRepo
+from rentomatic.services.room_list_service import RoomListService
 from rentomatic.postgres_settings import postgres_connexion
 
 blueprint = Blueprint('room', __name__)
@@ -45,16 +46,23 @@ room4 = {
 def room():
     #repo = mr.MemRepo([room1,room2,room3,room4])
     """Postgres Repo"""
-    repo = PostgresRepo(postgres_connexion)
+    #repo = PostgresRepo(postgres_connexion)
+    """Serialize the filters args"""
+    #filters = HttpFlaskRequestSer().filters(flask_request_args=request.args.items())
+    """Inject the filters in the rooms list request"""
+    #room_list_request = RoomListRequestObject.from_dict(dict_f=filters)
+    """Create a use case repo"""
+    #use_case = uc.RoomListUseCase(repo)
+    
+    #response_object = use_case.execute(room_list_request)
+
     """Serialize the filters args"""
     filters = HttpFlaskRequestSer().filters(flask_request_args=request.args.items())
-    """Inject the filters in the rooms list request"""
-    room_list_request = RoomListRequestObject.from_dict(dict_f=filters)
-    """Create a use case repo"""
-    use_case = uc.RoomListUseCase(repo)
-    
-    response_object = use_case.execute(room_list_request)
-
+    """Using a room list service"""
+    room_service = RoomListService(
+                    PostgresRepo(connection_data=postgres_connexion)
+                )
+    response_object = room_service.list_with_filters(filters=filters)
     
     
     return Response(response_object.json_ser(), mimetype='application/json', status=response_object.status_code)

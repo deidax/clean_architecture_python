@@ -7,6 +7,7 @@ from rentomatic.use_case.room_list_use_case import RoomListUseCase
 from rentomatic.request_object.room_list_request_object import RoomListRequestObject
 from rentomatic.repository.postgresrepo import PostgresRepo
 from rentomatic.postgres_settings import postgres_connexion
+from rentomatic.services.room_list_service import RoomListService
 
 """
 room1 = {
@@ -36,9 +37,10 @@ use_case = uc.RoomListUseCase(repo=repo)
 result = use_case.execute()
 """
 
-repo = PostgresRepo(postgres_connexion)
-use_case = RoomListUseCase(repo)
-request = RoomListRequestObject()
-result = use_case.execute(request=request)
+pg_service = RoomListService(
+            PostgresRepo(postgres_connexion)
+        )
+
+result = pg_service.list_with_filters()
 
 print(result.json_ser())

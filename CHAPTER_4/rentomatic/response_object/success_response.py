@@ -14,3 +14,5 @@ class SuccessResponse(RoomResponse):
         if isinstance(msg, Exception):
             return "{}: {}".format(msg.__class__.__name__, "{}".format(msg))
         return msg
+    
+    

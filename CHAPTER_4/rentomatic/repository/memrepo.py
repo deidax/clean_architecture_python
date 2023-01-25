@@ -1,5 +1,6 @@
 from rentomatic.domain import room
-class MemRepo():
+from .repo import Repo
+class MemRepo(Repo):
     
     def __init__(self, data_dict) -> None:
         self.data_dict = data_dict

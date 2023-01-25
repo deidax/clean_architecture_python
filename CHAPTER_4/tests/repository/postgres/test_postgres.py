@@ -1,5 +1,6 @@
 import pytest
 from rentomatic.repository.postgresrepo import PostgresRepo
+from rentomatic.services.room_list_service import RoomListService
 
 pytestmark = pytest.mark.integration
 
@@ -70,4 +71,14 @@ def test_repository_list_with_price_between_filter(pg_env,pg_data,pg_session):
         {
             'fe2c3195-aeff-487a-a08f-e0bdc0ec6e9a'
         }
+
+def test_with_room_service(pg_env,pg_data,pg_session):
     
+    pg_service = RoomListService(
+                PostgresRepo(pg_env['postgres'])
+            )
+
+    result = pg_service.list_with_filters()
+    
+    assert set([r.code for r in result.response_value]) ==\
+        set([r['code'] for r in pg_data])

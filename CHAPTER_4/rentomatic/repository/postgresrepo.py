@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker
 
 from rentomatic.domain import room
 from rentomatic.repository.postgres_object import Base, Room
-
-class PostgresRepo:
+from .repo import Repo
+class PostgresRepo(Repo):
     def __init__(self, connection_data) -> None:
         connection_string = "postgresql://{user}:{password}@{host}/{db}".format(
                 user=connection_data['user'],
